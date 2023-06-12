@@ -101,7 +101,7 @@ jobAvailability = cron.schedule("0 * * * *", function () {
   set.clear();
 });
 
-app.get("/", (req, res) => {
+app.head("/", (req, res) => {
   res.send("Hello World!");
 });
 
