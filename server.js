@@ -1,8 +1,10 @@
 const cron = require("node-cron");
 const express = require("express");
 const axios = require("axios");
+const moment = require("moment");
 
 const app = express();
+
 job = cron.schedule("*/60 * * * * *", function () {
   console.log("---------------------");
   console.log("running a task every 60 seconds");
@@ -28,13 +30,18 @@ job = cron.schedule("*/60 * * * * *", function () {
             key +
             "total available " +
             value.avl;
-          axios
-            .get(
-              `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
-            )
-            .then((response) => {
-              console.log("message sent" + response);
-            });
+
+          let month = moment(key).format("M");
+
+          if (month >= 9) {
+            axios
+              .get(
+                `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
+              )
+              .then((response) => {
+                console.log("message sent" + response);
+              });
+          }
         } else {
           console.log("seats not available for the day " + key);
         }
@@ -61,14 +68,17 @@ job = cron.schedule("*/60 * * * * *", function () {
             key +
             "total available " +
             value.avl;
+          let month = moment(key).format("M");
 
-          axios
-            .get(
-              `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
-            )
-            .then((response) => {
-              console.log("message sent" + response);
-            });
+          if (month >= 9) {
+            axios
+              .get(
+                `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
+              )
+              .then((response) => {
+                console.log("message sent" + response);
+              });
+          }
         } else {
           console.log("darshan seats not available for the day " + key);
         }
@@ -88,8 +98,14 @@ jobAvailability = cron.schedule("0 * * * *", function () {
     .then((response) => {
       console.log("message sent" + response);
     });
+  set.clear();
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 app.listen(3000, () => {
+  console.log(moment().format());
   console.log("application listening.....");
 });
