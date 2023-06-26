@@ -31,9 +31,8 @@ job = cron.schedule("*/60 * * * * *", function () {
             "total available " +
             value.avl;
 
-          let month = moment(key).format("M");
-
-          if (month >= 9) {
+          console.log(month + " " + day);
+          if (month === "9" && day === "07") {
             axios
               .get(
                 `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
@@ -47,30 +46,39 @@ job = cron.schedule("*/60 * * * * *", function () {
         }
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      let msg = "error occured " + err;
+      axios
+        .get(
+          `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
+        )
+        .then((response) => {
+          console.log("message sent" + response);
+        });
+    });
 
-  // check darshan availability
   axios
     .get(
-      "https://online.tirupatibalaji.ap.gov.in/sdn/rest/v1/slot/get_availability"
+      "https://online.tirupatibalaji.ap.gov.in/sdn/rest/v1/acc/get_availability?for=dashboard&location=TIRUPATI"
     )
     .then((res) => {
       for (const [key, value] of Object.entries(res.data.result)) {
         if (value.avl > 0) {
           console.log(
-            "darshan seats available for day " +
+            "accomodation seats available for day " +
               key +
               "total available " +
               value.avl
           );
+
           let msg =
-            "darshan seats available for day " +
+            "accomodation seats available for day " +
             key +
             "total available " +
             value.avl;
-          let month = moment(key).format("M");
 
-          if (month >= 9) {
+          console.log(month + " " + day);
+          if (month === "9" && day === "08") {
             axios
               .get(
                 `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
@@ -80,11 +88,20 @@ job = cron.schedule("*/60 * * * * *", function () {
               });
           }
         } else {
-          console.log("darshan seats not available for the day " + key);
+          console.log("seats not available for the day " + key);
         }
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      let msg = "error occured " + err;
+      axios
+        .get(
+          `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
+        )
+        .then((response) => {
+          console.log("message sent" + response);
+        });
+    });
 });
 
 //check running status 0 * * * *
@@ -109,3 +126,4 @@ app.listen(3000, () => {
   console.log(moment().format());
   console.log("application listening.....");
 });
+//ssh -i C:\Users\akhil\Downloads\ssh-key-2023-06-12.key opc@
