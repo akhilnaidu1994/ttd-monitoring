@@ -31,7 +31,8 @@ job = cron.schedule("*/60 * * * * *", function () {
             "total available " +
             value.avl;
 
-          console.log(month + " " + day);
+          let month = moment(key).format("M");
+          let day = moment(key).format("DD");
           if (month === "9" && day === "07") {
             axios
               .get(
@@ -77,8 +78,9 @@ job = cron.schedule("*/60 * * * * *", function () {
             "total available " +
             value.avl;
 
-          console.log(month + " " + day);
-          if (month === "9" && day === "08") {
+          let month = moment(key).format("M");
+          let day = moment(key).format("DD");
+          if (month === "9" && day === "07") {
             axios
               .get(
                 `https://api.telegram.org/bot6179873592:AAHas290B6LJ2gV7pvReRCdr8iT4gdx9dRs/sendMessage?chat_id=-727230961&text=${msg}`
